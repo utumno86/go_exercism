@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-// Clock type API:
+// Clock API:
 //
+// type Clock                      // define the clock type
 // New(hour, minute int) Clock     // a "constructor"
 // (Clock) String() string         // a "stringer"
 // (Clock) Add(minutes int) Clock
+// (Clock) Subtract(minutes int) Clock
 //
-// The Add method should also handle subtraction by accepting negative values.
-
 // To satisfy the README requirement about clocks being equal, values of
 // your Clock type need to work with the == operator. This means that if your
 // New function returns a pointer rather than a value, your clocks will
@@ -26,14 +26,6 @@ import (
 //
 // For some useful guidelines on when to use a value receiver or a pointer
 // receiver see: https://github.com/golang/go/wiki/CodeReviewComments#receiver-type
-
-const targetTestVersion = 4
-
-func TestTestVersion(t *testing.T) {
-	if testVersion != targetTestVersion {
-		t.Fatalf("Found testVersion = %v, want %v", testVersion, targetTestVersion)
-	}
-}
 
 func TestCreateClock(t *testing.T) {
 	for _, n := range timeTests {
@@ -52,6 +44,16 @@ func TestAddMinutes(t *testing.T) {
 		}
 	}
 	t.Log(len(addTests), "test cases")
+}
+
+func TestSubtractMinutes(t *testing.T) {
+	for _, a := range subtractTests {
+		if got := New(a.h, a.m).Subtract(a.a); got.String() != a.want {
+			t.Fatalf("New(%d, %d).Subtract(%d) = %q, want %q",
+				a.h, a.m, a.a, got, a.want)
+		}
+	}
+	t.Log(len(subtractTests), "test cases")
 }
 
 func TestCompareClocks(t *testing.T) {
@@ -78,6 +80,16 @@ func BenchmarkAddMinutes(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		for _, a := range addTests {
 			c.Add(a.a)
+		}
+	}
+}
+
+func BenchmarkSubtractMinutes(b *testing.B) {
+	c := New(12, 0)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		for _, a := range subtractTests {
+			c.Subtract(a.a)
 		}
 	}
 }
