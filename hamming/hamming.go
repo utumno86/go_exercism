@@ -2,8 +2,6 @@ package hamming
 
 import "errors"
 
-const testVersion = 6
-
 //Distance function for calculating hamming distance
 func Distance(a, b string) (int, error) {
 	if len(a) != len(b) {
