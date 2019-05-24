@@ -2,8 +2,6 @@ package raindrops
 
 import "strconv"
 
-const testVersion = 3
-
 //Convert integers into raindrops
 func Convert(input int) string {
 	response := ""
