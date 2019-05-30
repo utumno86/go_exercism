@@ -7,21 +7,12 @@ import (
 
 //IsIsogram checks whether a given string is an isogram
 func IsIsogram(input string) bool {
-	var included []rune
+	included := map[rune]bool{}
 	for _, c := range strings.ToLower(input) {
-		if contains(included, c) {
+		if unicode.IsLetter(c) && included[c] {
 			return false
 		}
-		included = append(included, c)
+		included[c] = true
 	}
 	return true
-}
-
-func contains(included []rune, c rune) bool {
-	for _, a := range included {
-		if a == c && unicode.IsLetter(c) {
-			return true
-		}
-	}
-	return false
 }
