@@ -9,7 +9,10 @@ import (
 func IsIsogram(input string) bool {
 	included := map[rune]bool{}
 	for _, c := range strings.ToLower(input) {
-		if unicode.IsLetter(c) && included[c] {
+		if !unicode.IsLetter(c) {
+			continue
+		}
+		if included[c] {
 			return false
 		}
 		included[c] = true
