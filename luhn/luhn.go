@@ -16,23 +16,24 @@ func Valid(input string) bool {
 }
 
 func checksum(input string) int64 {
+	evenNums := len(input)%2 == 0
 	nums := strings.Split(input, "")
 	sum := int64(0)
 	evenOddIndex := 1
-	for i := len(nums) - 1; i > -1; i-- {
-		currentDigit, err := strconv.ParseInt(nums[i], 10, 64)
+	if evenNums {
+		evenOddIndex++
+	}
+	for _, num := range nums {
+		currentDigit, err := strconv.ParseInt(num, 10, 64)
 		if err != nil {
 			return -1
 		}
+		sum = sum + currentDigit
 		if (evenOddIndex % 2) == 0 {
-			doubled := currentDigit * 2
-			if doubled >= 10 {
-				sum = sum + (doubled) - 9
-			} else {
-				sum = sum + doubled
-			}
-		} else {
 			sum = sum + currentDigit
+			if currentDigit*2 > 9 {
+				sum = sum - 9
+			}
 		}
 		evenOddIndex++
 	}
