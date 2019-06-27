@@ -1,7 +1,6 @@
 package luhn
 
 import (
-	"strconv"
 	"strings"
 )
 
@@ -9,21 +8,20 @@ import (
 func Valid(input string) bool {
 	strippedString := strings.Replace(input, " ", "", -1)
 	sum := checksum(strippedString)
-	if sum < 1 && len(strippedString) < 2 {
+	if len(strippedString) < 2 {
 		return false
 	}
 	return (sum % 10) == 0
 }
 
-func checksum(input string) int64 {
+func checksum(input string) int {
 	evenNums := len(input)%2 == 0
-	nums := strings.Split(input, "")
-	sum := int64(0)
-	for i, num := range nums {
-		currentDigit, err := strconv.ParseInt(num, 10, 64)
-		if err != nil {
+	sum := int(0)
+	for i, num := range []rune(input) {
+		if num < 48 || num > 57 {
 			return -1
 		}
+		currentDigit := int(num - '0')
 		evenOddIndex := i
 		if !evenNums {
 			evenOddIndex++
